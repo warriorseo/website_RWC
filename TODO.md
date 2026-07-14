@@ -1,0 +1,10 @@
+# 📝 To-Do List (RWC Clinic - SEO Project)
+
+## งานที่ค้างไว้สำหรับหมวดหมู่ Filler (Filler Knowledge)
+- [ ] นำข้อมูลจากรายงาน `filler_traffic_recovery_report.html` กลุ่ม **Negative Drops** (52 บทความ) ไปวิเคราะห์และวางแผนปรับปรุง Content เพื่อกู้ทราฟฟิกกลับมา
+- [ ] ติดตามผลบทความกลุ่ม **Performance Improved** (71 บทความ) ว่ามีคีย์เวิร์ดใดที่สามารถนำไปขยายความ หรือแตกบทความย่อยได้อีก
+- [ ] ตรวจเช็คและปรับแต่ง On-page SEO ของบทความกลุ่ม Negative Drops ตามโครงสร้างของหน้าเว็บ
+- [ ] (หากมี) ดำเนินการเช็ค Duplicate Content ในหมวดหมู่ฟิลเลอร์ให้เสร็จสมบูรณ์ (ต่อจากรายงาน `filler_duplicate_report.html` ที่รันค้างไว้)
+
+## งานอื่นๆ (ถ้ามี)
+- [ ] 

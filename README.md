@@ -9,3 +9,21 @@
 - **GSC Backlinks (Top linked pages):** [Google Sheets Link](https://docs.google.com/spreadsheets/d/14-GLX0JRyjyoh3vBD6SVVX_oXSDLGrLNEqOg9G8b_4w/edit?gid=941169007#gid=941169007)
 
 *(ข้อมูลเหล่านี้สามารถเข้าถึงและอ่านผ่าน Google Sheets ได้โดยตรงด้วย Service Account ของระบบ)*
+
+---
+
+# 🛠️ Scripts & Tools
+
+- **`generate_filler_report.py`**: สคริปต์สำหรับดึง URL ในหมวดหมู่ `filler-knowledge` (Category ID 112) จำนวน 239 บทความ ผ่าน WordPress REST API นำมาจับคู่กับข้อมูล GA4 จาก Google Sheets (เทียบปีต่อปี) และสร้างเป็นรายงานตาราง HTML โดยแบ่งกลุ่ม "หน้าที่มีประสิทธิภาพลดลง" และ "หน้าที่ประสิทธิภาพดีขึ้น"
+
+# 📊 Generated Reports
+
+- **[Filler Traffic Recovery Report](file:///d:/AI-Cyborg-2558/_SEO_Clients/RWC/web/filler_traffic_recovery_report.html)**: รายงานที่สรุปสถิติหน้าเว็บหมวดหมู่ฟิลเลอร์ แยก 2 ตารางชัดเจนตาม Engagement Time และ Rate ที่ตกและขึ้น
+
+---
+
+# 📝 To-Do List (สำหรับงานนี้)
+
+- [ ] นำข้อมูลจากตาราง Negative Drops (52 บทความ) ไปวิเคราะห์และวางแผน Rewrite/ปรับปรุง Content เพื่อกู้ทราฟฟิกกลับมา
+- [ ] ติดตามผลบทความกลุ่ม Performance Improved (71 บทความ) ว่ามีคีย์เวิร์ดใดที่สามารถต่อยอดได้อีก
+- [ ] (หากมี) ดำเนินการเช็ค Duplicate Content ในหมวดหมู่ฟิลเลอร์ต่อจากรายงาน `filler_duplicate_report.html` ที่รันค้างไว้

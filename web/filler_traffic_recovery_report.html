@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายงานการวิเคราะห์กู้ทราฟฟิกหมวดหมู่ Filler - RWC Clinic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+Thai:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Outfit', 'Noto Sans Thai', sans-serif;
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body class="p-8 text-slate-800">
+    <div class="max-w-7xl mx-auto">
+        <header class="flex justify-between items-center mb-12 pb-6 border-b border-slate-200">
+            <div>
+                <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-700 to-purple-700 bg-clip-text text-transparent">รายงานการวิเคราะห์กู้ทราฟฟิกหมวดหมู่ Filler</h1>
+                <p class="text-slate-600 text-lg mt-2">วิเคราะห์ข้อมูลเปรียบเทียบ YTD (ปี 2026 เทียบกับ 2025 ช่วงเวลาเดียวกันสะสม)</p>
+            </div>
+            <div class="text-right">
+                <p class="font-semibold text-slate-800">ลูกค้า: RWC Clinic</p>
+                <p class="text-sm text-slate-500">วันที่รายงาน: 14/07/2026</p>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 mb-12">
+            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:-translate-y-1 transition-transform duration-200">
+                <div class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-4">สัดส่วนประเภทหน้าเว็บทั้งหมดในชีต (Total Pages Breakdown)</div>
+                <div class="flex flex-wrap justify-around items-center text-lg font-semibold py-2">
+                    <span class="flex items-center text-blue-600"><i data-lucide="file-text" class="w-5 h-5 mr-2"></i> บทความ (Article): 590 หน้า</span>
+                    <span class="flex items-center text-amber-600"><i data-lucide="newspaper" class="w-5 h-5 mr-2"></i> ข่าวสาร (News): 32 หน้า</span>
+                    <span class="flex items-center text-purple-500"><i data-lucide="sparkles" class="w-5 h-5 mr-2"></i> บริการ (Service): 48 หน้า</span>
+                    <span class="flex items-center text-emerald-600"><i data-lucide="layout-template" class="w-5 h-5 mr-2"></i> หน้าหลัก/อื่นๆ (Page): 17 หน้า</span>
+                </div>
+                <div class="text-sm text-slate-500 mt-2 text-center">วิเคราะห์จากข้อมูลโครงสร้างตารางคัดกรองทั้งหมด 687 บรรทัด (ไม่รวมหัวตาราง)</div>
+            </div>
+        </div>
+
+        <!-- Section 1: Negative Drops -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-800">บทความที่ประสิทธิภาพลดลง (Negative Drops)</h2>
+                <p class="text-slate-500 mt-1">คัดกรองเฉพาะหน้าที่ <span class="font-semibold text-red-600">Engagement Time</span> และ <span class="font-semibold text-red-600">Engagement Rate</span> ลดลงทั้งคู่</p>
+                <p class="text-slate-500 mt-1">พบทั้งหมด <span class="font-bold text-red-600 text-lg">52 บทความ</span> จากบทความหมวดหมู่ Filler ทั้งหมด 239 บทความ</p>
+            </div>
+            <input type="text" id="searchInput" class="bg-white border border-slate-200 rounded-lg px-4 py-2 text-slate-800 w-full max-w-md outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" placeholder="ค้นหา URL หน้าเว็บ (ค้นหาได้ทั้ง 2 ตาราง)...">
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm mb-12">
+            <table class="w-full text-left border-collapse report-table">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200">
+                        <th class="py-4 px-6 font-semibold text-slate-600 w-16 text-center">#</th>
+                        <th class="py-4 px-6 font-semibold text-slate-600">URL หน้าเว็บ</th>
+                        <th class="py-4 px-6 font-semibold text-slate-600">Active Users (YoY)</th>
+                        <th class="py-4 px-6 font-semibold text-slate-600">Avg. Engagement Time (YoY)</th>
+                        <th class="py-4 px-6 font-semibold text-slate-600">Avg. Engagement Rate (YoY)</th>
+                        <th class="py-4 px-6 font-semibold text-slate-600">ลิงก์ GA4</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+    
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">1</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/lip-filler-review2/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/lip-filler-review2/">/lip-filler-review2/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">1 | 2<span class='block font-semibold mt-1 text-red-600'>-50%</span></td>
+                        <td class="py-4 px-6 text-sm">0.0s | 10.0s<span class='block font-semibold mt-1 text-red-600'>-100%</span></td>
+                        <td class="py-4 px-6 text-sm">0% | 100%<span class='block font-semibold mt-1 text-red-600'>-100%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">2</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/radiesse-filler/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/radiesse-filler/">/radiesse-filler/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">2 | 4<span class='block font-semibold mt-1 text-red-600'>-50%</span></td>
+                        <td class="py-4 px-6 text-sm">4.0s | 170.0s<span class='block font-semibold mt-1 text-red-600'>-97%</span></td>
+                        <td class="py-4 px-6 text-sm">50% | 90%<span class='block font-semibold mt-1 text-red-600'>-44%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">3</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-marionette-line/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-marionette-line/">/filler-marionette-line/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">5 | 7<span class='block font-semibold mt-1 text-red-600'>-29%</span></td>
+                        <td class="py-4 px-6 text-sm">17.0s | 150.0s<span class='block font-semibold mt-1 text-red-600'>-89%</span></td>
+                        <td class="py-4 px-6 text-sm">50% | 100%<span class='block font-semibold mt-1 text-red-600'>-50%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">4</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/price-forehead-filler-cc/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/price-forehead-filler-cc/">/price-forehead-filler-cc/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">2 | 5<span class='block font-semibold mt-1 text-red-600'>-60%</span></td>
+                        <td class="py-4 px-6 text-sm">11.0s | 83.0s<span class='block font-semibold mt-1 text-red-600'>-87%</span></td>
+                        <td class="py-4 px-6 text-sm">67% | 89%<span class='block font-semibold mt-1 text-red-600'>-25%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">5</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/how-long-filler/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/how-long-filler/">/how-long-filler/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">7 | 16<span class='block font-semibold mt-1 text-red-600'>-56%</span></td>
+                        <td class="py-4 px-6 text-sm">7.0s | 53.0s<span class='block font-semibold mt-1 text-red-600'>-87%</span></td>
+                        <td class="py-4 px-6 text-sm">43% | 71%<span class='block font-semibold mt-1 text-red-600'>-40%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">6</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/vagina-filler-hurt/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/vagina-filler-hurt/">/vagina-filler-hurt/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">8 | 2<span class='block font-semibold mt-1 text-emerald-600'>+300%</span></td>
+                        <td class="py-4 px-6 text-sm">8.0s | 52.0s<span class='block font-semibold mt-1 text-red-600'>-85%</span></td>
+                        <td class="py-4 px-6 text-sm">50% | 100%<span class='block font-semibold mt-1 text-red-600'>-50%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">7</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/harmonyca-suitable-for-whom/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/harmonyca-suitable-for-whom/">/harmonyca-suitable-for-whom/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">9 | 5<span class='block font-semibold mt-1 text-emerald-600'>+80%</span></td>
+                        <td class="py-4 px-6 text-sm">9.0s | 48.0s<span class='block font-semibold mt-1 text-red-600'>-81%</span></td>
+                        <td class="py-4 px-6 text-sm">81% | 100%<span class='block font-semibold mt-1 text-red-600'>-19%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">8</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/jawline-filler/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/jawline-filler/">/jawline-filler/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">2 | 5<span class='block font-semibold mt-1 text-red-600'>-60%</span></td>
+                        <td class="py-4 px-6 text-sm">16.0s | 74.0s<span class='block font-semibold mt-1 text-red-600'>-79%</span></td>
+                        <td class="py-4 px-6 text-sm">67% | 90%<span class='block font-semibold mt-1 text-red-600'>-26%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">9</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/how-many-day-lips-swell/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/how-many-day-lips-swell/">/how-many-day-lips-swell/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">13 | 6<span class='block font-semibold mt-1 text-emerald-600'>+117%</span></td>
+                        <td class="py-4 px-6 text-sm">18.0s | 85.0s<span class='block font-semibold mt-1 text-red-600'>-79%</span></td>
+                        <td class="py-4 px-6 text-sm">63% | 88%<span class='block font-semibold mt-1 text-red-600'>-28%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">10</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/acne-scar-filler/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/acne-scar-filler/">/acne-scar-filler/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">5 | 9<span class='block font-semibold mt-1 text-red-600'>-44%</span></td>
+                        <td class="py-4 px-6 text-sm">13.0s | 56.0s<span class='block font-semibold mt-1 text-red-600'>-76%</span></td>
+                        <td class="py-4 px-6 text-sm">75% | 91%<span class='block font-semibold mt-1 text-red-600'>-17%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">11</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-forehead-safety-risks/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-forehead-safety-risks/">/filler-forehead-safety-risks/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">4 | 4<span class='block font-semibold mt-1 text-emerald-600'>+0%</span></td>
+                        <td class="py-4 px-6 text-sm">6.0s | 26.0s<span class='block font-semibold mt-1 text-red-600'>-75%</span></td>
+                        <td class="py-4 px-6 text-sm">75% | 83%<span class='block font-semibold mt-1 text-red-600'>-10%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">12</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-eyebags/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-eyebags/">/filler-eyebags/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">9 | 8<span class='block font-semibold mt-1 text-emerald-600'>+12%</span></td>
+                        <td class="py-4 px-6 text-sm">22.0s | 82.0s<span class='block font-semibold mt-1 text-red-600'>-73%</span></td>
+                        <td class="py-4 px-6 text-sm">60% | 92%<span class='block font-semibold mt-1 text-red-600'>-35%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">13</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/hip-enhancement/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/hip-enhancement/">/hip-enhancement/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">6 | 4<span class='block font-semibold mt-1 text-emerald-600'>+50%</span></td>
+                        <td class="py-4 px-6 text-sm">7.0s | 20.0s<span class='block font-semibold mt-1 text-red-600'>-67%</span></td>
+                        <td class="py-4 px-6 text-sm">14% | 100%<span class='block font-semibold mt-1 text-red-600'>-86%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">14</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/fat-grafting-vs-filler-under-eye/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/fat-grafting-vs-filler-under-eye/">/fat-grafting-vs-filler-under-eye/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">2 | 2<span class='block font-semibold mt-1 text-emerald-600'>+0%</span></td>
+                        <td class="py-4 px-6 text-sm">8.0s | 26.0s<span class='block font-semibold mt-1 text-red-600'>-67%</span></td>
+                        <td class="py-4 px-6 text-sm">67% | 100%<span class='block font-semibold mt-1 text-red-600'>-33%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">15</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/how-long-does-harmonyca/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/how-long-does-harmonyca/">/how-long-does-harmonyca/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">11 | 8<span class='block font-semibold mt-1 text-emerald-600'>+38%</span></td>
+                        <td class="py-4 px-6 text-sm">21.0s | 64.0s<span class='block font-semibold mt-1 text-red-600'>-66%</span></td>
+                        <td class="py-4 px-6 text-sm">72% | 90%<span class='block font-semibold mt-1 text-red-600'>-20%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">16</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/hip-filler-vs-fatgrafting/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/hip-filler-vs-fatgrafting/">/hip-filler-vs-fatgrafting/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">53 | 29<span class='block font-semibold mt-1 text-emerald-600'>+83%</span></td>
+                        <td class="py-4 px-6 text-sm">32.0s | 88.0s<span class='block font-semibold mt-1 text-red-600'>-63%</span></td>
+                        <td class="py-4 px-6 text-sm">38% | 61%<span class='block font-semibold mt-1 text-red-600'>-37%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">17</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-vagina-dangerous/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-vagina-dangerous/">/filler-vagina-dangerous/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">5 | 5<span class='block font-semibold mt-1 text-emerald-600'>+0%</span></td>
+                        <td class="py-4 px-6 text-sm">29.0s | 76.0s<span class='block font-semibold mt-1 text-red-600'>-62%</span></td>
+                        <td class="py-4 px-6 text-sm">20% | 83%<span class='block font-semibold mt-1 text-red-600'>-76%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">18</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/after-filler-injection/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/after-filler-injection/">/after-filler-injection/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">49 | 26<span class='block font-semibold mt-1 text-emerald-600'>+88%</span></td>
+                        <td class="py-4 px-6 text-sm">36.0s | 95.0s<span class='block font-semibold mt-1 text-red-600'>-62%</span></td>
+                        <td class="py-4 px-6 text-sm">47% | 74%<span class='block font-semibold mt-1 text-red-600'>-37%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">19</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/before-filler-injection/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/before-filler-injection/">/before-filler-injection/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">5 | 3<span class='block font-semibold mt-1 text-emerald-600'>+67%</span></td>
+                        <td class="py-4 px-6 text-sm">35.0s | 85.0s<span class='block font-semibold mt-1 text-red-600'>-59%</span></td>
+                        <td class="py-4 px-6 text-sm">83% | 86%<span class='block font-semibold mt-1 text-red-600'>-3%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">20</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/lip-filler-dissolution/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/lip-filler-dissolution/">/lip-filler-dissolution/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">3 | 1<span class='block font-semibold mt-1 text-emerald-600'>+200%</span></td>
+                        <td class="py-4 px-6 text-sm">32.0s | 76.0s<span class='block font-semibold mt-1 text-red-600'>-58%</span></td>
+                        <td class="py-4 px-6 text-sm">83% | 100%<span class='block font-semibold mt-1 text-red-600'>-17%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">21</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/review-chin-filler/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/review-chin-filler/">/review-chin-filler/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">18 | 18<span class='block font-semibold mt-1 text-emerald-600'>+0%</span></td>
+                        <td class="py-4 px-6 text-sm">14.0s | 34.0s<span class='block font-semibold mt-1 text-red-600'>-58%</span></td>
+                        <td class="py-4 px-6 text-sm">58% | 76%<span class='block font-semibold mt-1 text-red-600'>-24%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">22</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/midface-filler/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/midface-filler/">/midface-filler/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">3 | 4<span class='block font-semibold mt-1 text-red-600'>-25%</span></td>
+                        <td class="py-4 px-6 text-sm">14.0s | 34.0s<span class='block font-semibold mt-1 text-red-600'>-58%</span></td>
+                        <td class="py-4 px-6 text-sm">60% | 75%<span class='block font-semibold mt-1 text-red-600'>-20%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">23</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-wrong-shape/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-wrong-shape/">/filler-wrong-shape/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">6 | 33<span class='block font-semibold mt-1 text-red-600'>-82%</span></td>
+                        <td class="py-4 px-6 text-sm">17.0s | 40.0s<span class='block font-semibold mt-1 text-red-600'>-58%</span></td>
+                        <td class="py-4 px-6 text-sm">64% | 74%<span class='block font-semibold mt-1 text-red-600'>-14%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">24</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/vagina-filler-side-effects/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/vagina-filler-side-effects/">/vagina-filler-side-effects/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">44 | 56<span class='block font-semibold mt-1 text-red-600'>-21%</span></td>
+                        <td class="py-4 px-6 text-sm">44.0s | 99.0s<span class='block font-semibold mt-1 text-red-600'>-55%</span></td>
+                        <td class="py-4 px-6 text-sm">51% | 56%<span class='block font-semibold mt-1 text-red-600'>-8%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">25</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/forehead-wrinkles/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/forehead-wrinkles/">/forehead-wrinkles/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">7 | 3<span class='block font-semibold mt-1 text-emerald-600'>+133%</span></td>
+                        <td class="py-4 px-6 text-sm">29.0s | 63.0s<span class='block font-semibold mt-1 text-red-600'>-54%</span></td>
+                        <td class="py-4 px-6 text-sm">71% | 100%<span class='block font-semibold mt-1 text-red-600'>-29%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">26</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/brands-filler-thailand/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/brands-filler-thailand/">/brands-filler-thailand/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">31 | 80<span class='block font-semibold mt-1 text-red-600'>-61%</span></td>
+                        <td class="py-4 px-6 text-sm">33.0s | 72.0s<span class='block font-semibold mt-1 text-red-600'>-54%</span></td>
+                        <td class="py-4 px-6 text-sm">50% | 59%<span class='block font-semibold mt-1 text-red-600'>-15%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">27</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/hyaluronic-acid-benefits/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/hyaluronic-acid-benefits/">/hyaluronic-acid-benefits/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">19 | 42<span class='block font-semibold mt-1 text-red-600'>-55%</span></td>
+                        <td class="py-4 px-6 text-sm">9.0s | 19.0s<span class='block font-semibold mt-1 text-red-600'>-53%</span></td>
+                        <td class="py-4 px-6 text-sm">48% | 65%<span class='block font-semibold mt-1 text-red-600'>-27%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">28</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-temple-brands-comparison/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-temple-brands-comparison/">/filler-temple-brands-comparison/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">3 | 2<span class='block font-semibold mt-1 text-emerald-600'>+50%</span></td>
+                        <td class="py-4 px-6 text-sm">37.0s | 74.0s<span class='block font-semibold mt-1 text-red-600'>-50%</span></td>
+                        <td class="py-4 px-6 text-sm">67% | 100%<span class='block font-semibold mt-1 text-red-600'>-33%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">29</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/rotten-filler/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/rotten-filler/">/rotten-filler/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">17 | 43<span class='block font-semibold mt-1 text-red-600'>-60%</span></td>
+                        <td class="py-4 px-6 text-sm">24.0s | 46.0s<span class='block font-semibold mt-1 text-red-600'>-49%</span></td>
+                        <td class="py-4 px-6 text-sm">58% | 72%<span class='block font-semibold mt-1 text-red-600'>-19%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">30</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/sunken-cheeks-causes/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/sunken-cheeks-causes/">/sunken-cheeks-causes/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">47 | 55<span class='block font-semibold mt-1 text-red-600'>-15%</span></td>
+                        <td class="py-4 px-6 text-sm">38.0s | 71.0s<span class='block font-semibold mt-1 text-red-600'>-47%</span></td>
+                        <td class="py-4 px-6 text-sm">40% | 60%<span class='block font-semibold mt-1 text-red-600'>-33%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">31</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/under-eye-filler-price/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/under-eye-filler-price/">/under-eye-filler-price/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">21 | 32<span class='block font-semibold mt-1 text-red-600'>-34%</span></td>
+                        <td class="py-4 px-6 text-sm">38.0s | 60.0s<span class='block font-semibold mt-1 text-red-600'>-37%</span></td>
+                        <td class="py-4 px-6 text-sm">67% | 69%<span class='block font-semibold mt-1 text-red-600'>-3%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">32</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/hip-filler-after/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/hip-filler-after/">/hip-filler-after/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">20 | 9<span class='block font-semibold mt-1 text-emerald-600'>+122%</span></td>
+                        <td class="py-4 px-6 text-sm">25.0s | 38.0s<span class='block font-semibold mt-1 text-red-600'>-34%</span></td>
+                        <td class="py-4 px-6 text-sm">52% | 60%<span class='block font-semibold mt-1 text-red-600'>-14%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">33</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-nose-men-guide/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-nose-men-guide/">/filler-nose-men-guide/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">5 | 5<span class='block font-semibold mt-1 text-emerald-600'>+0%</span></td>
+                        <td class="py-4 px-6 text-sm">54.0s | 83.0s<span class='block font-semibold mt-1 text-red-600'>-34%</span></td>
+                        <td class="py-4 px-6 text-sm">67% | 88%<span class='block font-semibold mt-1 text-red-600'>-24%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">34</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/dont-eat-after-filler/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/dont-eat-after-filler/">/dont-eat-after-filler/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">26 | 59<span class='block font-semibold mt-1 text-red-600'>-56%</span></td>
+                        <td class="py-4 px-6 text-sm">24.0s | 37.0s<span class='block font-semibold mt-1 text-red-600'>-34%</span></td>
+                        <td class="py-4 px-6 text-sm">41% | 49%<span class='block font-semibold mt-1 text-red-600'>-17%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">35</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-under-eye-blindness/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-under-eye-blindness/">/filler-under-eye-blindness/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">11 | 3<span class='block font-semibold mt-1 text-emerald-600'>+267%</span></td>
+                        <td class="py-4 px-6 text-sm">43.0s | 59.0s<span class='block font-semibold mt-1 text-red-600'>-27%</span></td>
+                        <td class="py-4 px-6 text-sm">50% | 100%<span class='block font-semibold mt-1 text-red-600'>-50%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">36</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/fast-filler-breakdown/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/fast-filler-breakdown/">/fast-filler-breakdown/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">256 | 430<span class='block font-semibold mt-1 text-red-600'>-40%</span></td>
+                        <td class="py-4 px-6 text-sm">40.0s | 55.0s<span class='block font-semibold mt-1 text-red-600'>-26%</span></td>
+                        <td class="py-4 px-6 text-sm">40% | 52%<span class='block font-semibold mt-1 text-red-600'>-24%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">37</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/after-filler-dissolution-care/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/after-filler-dissolution-care/">/after-filler-dissolution-care/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">49 | 12<span class='block font-semibold mt-1 text-emerald-600'>+308%</span></td>
+                        <td class="py-4 px-6 text-sm">49.0s | 65.0s<span class='block font-semibold mt-1 text-red-600'>-25%</span></td>
+                        <td class="py-4 px-6 text-sm">41% | 56%<span class='block font-semibold mt-1 text-red-600'>-26%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">38</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-restylane-kysse/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-restylane-kysse/">/filler-restylane-kysse/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">50 | 56<span class='block font-semibold mt-1 text-red-600'>-11%</span></td>
+                        <td class="py-4 px-6 text-sm">14.0s | 18.0s<span class='block font-semibold mt-1 text-red-600'>-25%</span></td>
+                        <td class="py-4 px-6 text-sm">28% | 34%<span class='block font-semibold mt-1 text-red-600'>-18%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">39</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-under-eye-cc/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-under-eye-cc/">/filler-under-eye-cc/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">4 | 8<span class='block font-semibold mt-1 text-red-600'>-50%</span></td>
+                        <td class="py-4 px-6 text-sm">30.0s | 39.0s<span class='block font-semibold mt-1 text-red-600'>-25%</span></td>
+                        <td class="py-4 px-6 text-sm">80% | 100%<span class='block font-semibold mt-1 text-red-600'>-20%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">40</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/danger-filler/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/danger-filler/">/danger-filler/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">13 | 27<span class='block font-semibold mt-1 text-red-600'>-52%</span></td>
+                        <td class="py-4 px-6 text-sm">38.0s | 50.0s<span class='block font-semibold mt-1 text-red-600'>-23%</span></td>
+                        <td class="py-4 px-6 text-sm">38% | 73%<span class='block font-semibold mt-1 text-red-600'>-49%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">41</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/nose-enhancement-then-filler-injection/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/nose-enhancement-then-filler-injection/">/nose-enhancement-then-filler-injection/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">122 | 96<span class='block font-semibold mt-1 text-emerald-600'>+27%</span></td>
+                        <td class="py-4 px-6 text-sm">24.0s | 31.0s<span class='block font-semibold mt-1 text-red-600'>-22%</span></td>
+                        <td class="py-4 px-6 text-sm">45% | 47%<span class='block font-semibold mt-1 text-red-600'>-4%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">42</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-under-eye-swelling/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-under-eye-swelling/">/filler-under-eye-swelling/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">4 | 3<span class='block font-semibold mt-1 text-emerald-600'>+33%</span></td>
+                        <td class="py-4 px-6 text-sm">26.0s | 33.0s<span class='block font-semibold mt-1 text-red-600'>-21%</span></td>
+                        <td class="py-4 px-6 text-sm">80% | 100%<span class='block font-semibold mt-1 text-red-600'>-20%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">43</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/how-much-filler/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/how-much-filler/">/how-much-filler/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">16 | 45<span class='block font-semibold mt-1 text-red-600'>-64%</span></td>
+                        <td class="py-4 px-6 text-sm">37.0s | 46.0s<span class='block font-semibold mt-1 text-red-600'>-20%</span></td>
+                        <td class="py-4 px-6 text-sm">65% | 66%<span class='block font-semibold mt-1 text-red-600'>-2%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">44</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-lump/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-lump/">/filler-lump/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">160 | 249<span class='block font-semibold mt-1 text-red-600'>-36%</span></td>
+                        <td class="py-4 px-6 text-sm">60.0s | 74.0s<span class='block font-semibold mt-1 text-red-600'>-19%</span></td>
+                        <td class="py-4 px-6 text-sm">51% | 57%<span class='block font-semibold mt-1 text-red-600'>-11%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">45</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-forehead-brands/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-forehead-brands/">/filler-forehead-brands/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">2 | 4<span class='block font-semibold mt-1 text-red-600'>-50%</span></td>
+                        <td class="py-4 px-6 text-sm">14.0s | 17.0s<span class='block font-semibold mt-1 text-red-600'>-18%</span></td>
+                        <td class="py-4 px-6 text-sm">50% | 88%<span class='block font-semibold mt-1 text-red-600'>-43%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">46</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-hip-dangers/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-hip-dangers/">/filler-hip-dangers/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">6 | 13<span class='block font-semibold mt-1 text-red-600'>-54%</span></td>
+                        <td class="py-4 px-6 text-sm">30.0s | 36.0s<span class='block font-semibold mt-1 text-red-600'>-17%</span></td>
+                        <td class="py-4 px-6 text-sm">50% | 65%<span class='block font-semibold mt-1 text-red-600'>-23%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">47</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-under-eye-lumps/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-under-eye-lumps/">/filler-under-eye-lumps/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">3 | 1<span class='block font-semibold mt-1 text-emerald-600'>+200%</span></td>
+                        <td class="py-4 px-6 text-sm">60.0s | 71.0s<span class='block font-semibold mt-1 text-red-600'>-15%</span></td>
+                        <td class="py-4 px-6 text-sm">50% | 100%<span class='block font-semibold mt-1 text-red-600'>-50%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">48</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/what-to-know-before-nose-filler/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/what-to-know-before-nose-filler/">/what-to-know-before-nose-filler/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">3 | 4<span class='block font-semibold mt-1 text-red-600'>-25%</span></td>
+                        <td class="py-4 px-6 text-sm">13.0s | 15.0s<span class='block font-semibold mt-1 text-red-600'>-12%</span></td>
+                        <td class="py-4 px-6 text-sm">67% | 88%<span class='block font-semibold mt-1 text-red-600'>-24%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">49</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-temple-price/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-temple-price/">/filler-temple-price/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">1 | 2<span class='block font-semibold mt-1 text-red-600'>-50%</span></td>
+                        <td class="py-4 px-6 text-sm">27.0s | 30.0s<span class='block font-semibold mt-1 text-red-600'>-8%</span></td>
+                        <td class="py-4 px-6 text-sm">75% | 100%<span class='block font-semibold mt-1 text-red-600'>-25%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">50</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/filler-forehead-physiognomy/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/filler-forehead-physiognomy/">/filler-forehead-physiognomy/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">5 | 4<span class='block font-semibold mt-1 text-emerald-600'>+25%</span></td>
+                        <td class="py-4 px-6 text-sm">23.0s | 24.0s<span class='block font-semibold mt-1 text-red-600'>-6%</span></td>
+                        <td class="py-4 px-6 text-sm">71% | 88%<span class='block font-semibold mt-1 text-red-600'>-18%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">51</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/midface-filler-review/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/midface-filler-review/">/midface-filler-review/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">19 | 25<span class='block font-semibold mt-1 text-red-600'>-24%</span></td>
+                        <td class="py-4 px-6 text-sm">35.0s | 36.0s<span class='block font-semibold mt-1 text-red-600'>-4%</span></td>
+                        <td class="py-4 px-6 text-sm">47% | 73%<span class='block font-semibold mt-1 text-red-600'>-35%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors search-row">
+                        <td class="py-4 px-6 text-center text-slate-400 font-semibold">52</td>
+                        <td class="py-4 px-6">
+                            <a href="https://rwcclinic.com/hip-filler-brand/" target="_blank" class="text-blue-600 font-semibold hover:underline block max-w-sm truncate" title="https://rwcclinic.com/hip-filler-brand/">/hip-filler-brand/</a>
+                        </td>
+                        <td class="py-4 px-6 text-sm">1 | 4<span class='block font-semibold mt-1 text-red-600'>-75%</span></td>
+                        <td class="py-4 px-6 text-sm">21.0s | 21.0s<span class='block font-semibold mt-1 text-red-600'>-1%</span></td>
+                        <td class="py-4 px-6 text-sm">50% | 100%<span class='block font-semibold mt-1 text-red-600'>-50%</span></td>
+                        <td class="py-4 px-6"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Section 2: Positive Gains -->
+        <div class="flex justify-between items-end mb-6 mt-16">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-800">บทความที่ประสิทธิภาพดีขึ้น (Performance Improved)</h2>
+                <p class="text-slate-500 mt-1">คัดกรองเฉพาะหน้าที่ <span class="font-semibold text-emerald-600">Engagement Time</span> และ <span class="font-semibold text-emerald-600">Engagement Rate</span> เพิ่มขึ้นทั้งคู่</p>
+                <p class="text-slate-500 mt-1">พบทั้งหมด <span class="font-bold text-emerald-600 text-lg">53 บทความ</span> จากบทความหมวดหมู่ Filler ทั้งหมด 239 บทความ</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            var input = this.value.toLowerCase();
+            var rows = document.querySelectorAll('.report-table tbody .search-row');
+            for (var i = 0; i < rows.length; i++) {
+                var urlText = rows[i].querySelector('td:nth-child(2)').textContent.toLowerCase();
+                if (urlText.includes(input)) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
