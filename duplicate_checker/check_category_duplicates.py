@@ -4,13 +4,17 @@ import requests
 import urllib3
 import re
 import argparse
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote
 from bs4 import BeautifulSoup
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import warnings
 from bs4 import MarkupResemblesLocatorWarning
 from pythainlp.tokenize import word_tokenize
+import numpy as np
+
+def thai_tokenizer(text):
+    return word_tokenize(text, engine='newmm')
 
 from google.oauth2 import service_account
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
@@ -19,6 +23,8 @@ from google.analytics.data_v1beta.types import (
     Dimension,
     Metric,
     RunReportRequest,
+    FilterExpression,
+    Filter,
 )
 from dotenv import load_dotenv
 
@@ -81,6 +87,14 @@ def fetch_ga4_data_1year():
             Metric(name="engagementRate")
         ],
         date_ranges=[DateRange(start_date="365daysAgo", end_date="today")],
+        dimension_filter=FilterExpression(
+            filter=Filter(
+                field_name="sessionDefaultChannelGroup",
+                in_list_filter=Filter.InListFilter(
+                    values=["Organic Search", "Organic Video", "Organic Social", "Organic Shopping"]
+                )
+            )
+        ),
         limit=100000
     )
     
@@ -195,6 +209,16 @@ def main():
         parsed_url = urlparse(link)
         path = parsed_url.path.rstrip('/') + '/'
         
+        # Build complex GA4 URL
+        ga4_path = quote(path, safe='')
+        ga4_path_double = quote(ga4_path, safe='')
+        ga4_deep_link = (
+            "https://analytics.google.com/analytics/web/#/a149800124p292925407/reports/explorer?"
+            "params=_u..nav%3Dmaui%26_u..built_comparisons_enabled%3Dtrue%26_u..comparisons%3D%5B%7B%22savedComparisonId%22:%227523527606%22,%22name%22:%22Organic%20traffic%22,%22isEnabled%22:true,%22filters%22:%5B%7B%22fieldName%22:%22sessionDefaultChannelGrouping%22,%22evaluationType%22:8,%22expressionList%22:%5B%22Organic%20Search%22,%22Organic%20Video%22,%22Organic%20Social%22,%22Organic%20Shopping%22%5D,%22isCaseSensitive%22:true%7D%5D,%22systemDefinedSavedComparisonType%22:2,%22isSystemDefined%22:true%7D%5D%26_u.dateOption%3DyearToDate%26_u.comparisonOption%3Ddisabled%26_r.explorerCard..filterTerm%3D"
+            + ga4_path_double +
+            "%26_r.explorerCard..startRow%3D0&r=all-pages-and-screens"
+        )
+        
         # Headings extraction for analysis, filtering out CTA and common fluff
         ignore_headings = ['CONTACT FOR SPECIAL PRIVILEGES', 'บทความยอดนิยม', 'สารบัญ', 'สรุป', 'บทความที่เกี่ยวข้อง', 'โปรโมชั่น', 'รีวิว']
         headings = set([h.get_text(strip=True) for h in soup.find_all(['h2', 'h3']) 
@@ -210,14 +234,17 @@ def main():
         post_info.append({
             'title': title,
             'url': link,
+            'ga4_deep_link': ga4_deep_link,
             'word_count': thai_word_count,
             'ga4': stats,
-            'headings': headings
+            'headings': headings,
+            'clean_text': text
         })
 
     print("Calculating TF-IDF and Cosine Similarity...")
-    vectorizer = TfidfVectorizer(analyzer='char', ngram_range=(3, 5))
+    vectorizer = TfidfVectorizer(tokenizer=thai_tokenizer, min_df=2, max_df=0.95)
     tfidf_matrix = vectorizer.fit_transform(documents)
+    feature_names = vectorizer.get_feature_names_out()
     similarity_matrix = cosine_similarity(tfidf_matrix)
 
     high_sim_pairs = []
@@ -240,12 +267,53 @@ def main():
                         reason += f", '{sample[2]}'"
                 else:
                     reason = "เนื้อหา/ย่อหน้าภายในมีการใช้แพทเทิร์นหรือข้อความซ้ำกัน (ไม่มีหัวข้อที่ตรงกันเป๊ะ)"
+                
+                vec_a = tfidf_matrix[i].toarray()[0]
+                vec_b = tfidf_matrix[j].toarray()[0]
+                shared_indices = np.where((vec_a > 0) & (vec_b > 0))[0]
+                shared_words = []
+                for si in shared_indices:
+                    shared_words.append({'word': feature_names[si], 'weight': vec_a[si] * vec_b[si]})
+                shared_words = sorted(shared_words, key=lambda x: x['weight'], reverse=True)
+                top_shared = shared_words[:20]
+                
+                # Unique A
+                unique_a_indices = np.where((vec_a > 0) & (vec_b == 0))[0]
+                unique_a_words = [{'word': feature_names[si], 'weight': vec_a[si]} for si in unique_a_indices]
+                top_unique_a = sorted(unique_a_words, key=lambda x: x['weight'], reverse=True)[:15]
+                
+                # Unique B
+                unique_b_indices = np.where((vec_b > 0) & (vec_a == 0))[0]
+                unique_b_words = [{'word': feature_names[si], 'weight': vec_b[si]} for si in unique_b_indices]
+                top_unique_b = sorted(unique_b_words, key=lambda x: x['weight'], reverse=True)[:15]
+                
+                # Exact phrases
+                ignore_exact_phrases = [
+                    "กดด้านล่างติดเราเพื่อสอบถามรายละเอียด",
+                    "กดด้านล่างติดเรา",
+                    "สอบถามรายละเอียดเเละสิทธิ์อื่นๆ",
+                    "ทีมแพทย์ผู้เชี่ยวชาญด้านผิวหนัง",
+                    "สงวนลิขสิทธิ์",
+                    "อ่านเพิ่มเติม",
+                    "บทความที่เกี่ยวข้อง",
+                    "ติดต่อเรา"
+                ]
+                clauses_a = [c.strip() for c in re.split(r'[\n\s]+', post_info[i]['clean_text']) if len(c.strip()) > 30 and not any(ign in c for ign in ignore_exact_phrases)]
+                clauses_b = [c.strip() for c in re.split(r'[\n\s]+', post_info[j]['clean_text']) if len(c.strip()) > 30 and not any(ign in c for ign in ignore_exact_phrases)]
+                shared_clauses = list(set(clauses_a).intersection(set(clauses_b)))
+                top_shared_clauses = shared_clauses[:5]
                     
                 high_sim_pairs.append({
                     'score': score,
                     'post1': post_info[i],
                     'post2': post_info[j],
-                    'reason': reason
+                    'reason': reason,
+                    'top_shared': top_shared,
+                    'total_shared': len(shared_indices),
+                    'top_unique_a': top_unique_a,
+                    'top_unique_b': top_unique_b,
+                    'top_shared_clauses': top_shared_clauses,
+                    'shared_h': list(shared_h) if shared_h else []
                 })
 
     high_sim_pairs = sorted(high_sim_pairs, key=lambda x: x['score'], reverse=True)
@@ -268,6 +336,20 @@ def main():
             <h1 class="text-3xl font-bold text-slate-800">รายงานบทความซ้ำซ้อน (Duplicate Content)</h1>
             <p class="text-slate-600 mt-2">หมวดหมู่: <span class="font-semibold text-blue-600">{cat_name}</span> | จำนวนคู่ที่พบ: <span class="font-semibold text-red-600">{len(high_sim_pairs)} คู่</span> | ความเหมือนขั้นต่ำ: {threshold*100:.0f}%</p>
         </header>
+
+        <details class="bg-white border border-slate-200 rounded-lg shadow-sm mb-8 group">
+            <summary class="cursor-pointer p-4 font-semibold text-slate-700 bg-slate-50 rounded-t-lg hover:bg-slate-100 flex justify-between items-center outline-none">
+                <span>⚙️ ระบบนี้วิเคราะห์ความซ้ำซ้อนอย่างไร? (TF-IDF & Cosine Similarity)</span>
+                <span class="text-slate-400 group-open:rotate-180 transition-transform duration-200">▼</span>
+            </summary>
+            <div class="p-6 border-t border-slate-200 text-sm text-slate-600 leading-relaxed bg-white">
+                <p class="mb-3"><strong>1. การตัดคำ (Tokenization):</strong> ระบบใช้เทคโนโลยี AI (PyThaiNLP) ในการอ่านเนื้อหาทั้งหมดและตัดประโยคภาษาไทยที่เขียนติดกันยาวๆ ออกเป็น "คำย่อยๆ" ได้อย่างแม่นยำ (เช่น "ฉีด", "ฟิลเลอร์", "หน้า")</p>
+                <p class="mb-3"><strong>2. การให้น้ำหนักคำ (TF-IDF):</strong> 
+                   <br><span class="ml-4">- <strong>TF (Term Frequency):</strong> นับว่าคำศัพท์แต่ละคำปรากฏบ่อยแค่ไหนใน 1 บทความ</span>
+                   <br><span class="ml-4">- <strong>IDF (Inverse Document Frequency):</strong> ระบบจะลดความสำคัญของ "คำที่เจอได้ทั่วไปในทุกหน้า" (เช่น คือ, และ, ทำให้) และเพิ่มความสำคัญให้ "คำเฉพาะเจาะจง" ที่โผล่มาแค่บางบทความ</span></p>
+                <p><strong>3. การเทียบความเหมือน (Cosine Similarity):</strong> นำสัดส่วนคำศัพท์ทั้งหมดของ 2 บทความมาแปลงเป็นเวกเตอร์ทางคณิตศาสตร์ และเทียบมุมองศากันเพื่อให้ได้เปอร์เซ็นต์ความเหมือน (0-100%) ที่แม่นยำที่สุด ไม่ใช่แค่การนับคำซ้ำทื่อๆ</p>
+            </div>
+        </details>
 ''')
             if not high_sim_pairs:
                 f.write('<p class="text-emerald-600 font-semibold">ไม่พบบทความซ้ำซ้อนที่เกินเกณฑ์ที่กำหนด</p>')
@@ -298,6 +380,7 @@ def main():
                     <div>
                         <p class="text-xs text-slate-400 font-bold tracking-wider uppercase mb-2">Post A</p>
                         <a href="{p1['url']}" target="_blank" class="text-blue-600 hover:underline font-semibold text-lg line-clamp-2" title="{p1['title']}">{p1['title']}</a>
+                        <a href="{p1['ga4_deep_link']}" target="_blank" class="text-xs text-orange-600 hover:underline mt-1 inline-block" title="คลิกเพื่อดูสถิติหน้านี้แบบ Organic Traffic ย้อนหลัง 1 ปี ใน GA4">📊 เช็คข้อมูลเจาะลึกหน้านี้ใน GA4</a>
                     </div>
                     
                     <div class="mt-4 grid grid-cols-2 gap-4">
@@ -325,6 +408,7 @@ def main():
                     <div>
                         <p class="text-xs text-slate-400 font-bold tracking-wider uppercase mb-2">Post B</p>
                         <a href="{p2['url']}" target="_blank" class="text-blue-600 hover:underline font-semibold text-lg line-clamp-2" title="{p2['title']}">{p2['title']}</a>
+                        <a href="{p2['ga4_deep_link']}" target="_blank" class="text-xs text-orange-600 hover:underline mt-1 inline-block" title="คลิกเพื่อดูสถิติหน้านี้แบบ Organic Traffic ย้อนหลัง 1 ปี ใน GA4">📊 เช็คข้อมูลเจาะลึกหน้านี้ใน GA4</a>
                     </div>
                     
                     <div class="mt-4 grid grid-cols-2 gap-4">
@@ -348,6 +432,52 @@ def main():
                 </div>
 
             </div>
+            
+            <details class="mt-4 border border-slate-200 rounded-lg group">
+                <summary class="cursor-pointer p-3 text-sm font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 flex justify-between items-center rounded-lg outline-none group-open:rounded-b-none group-open:border-b border-slate-200">
+                    <span>🔍 ดูข้อมูลวิเคราะห์เชิงลึก (Deep Analysis)</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform duration-200">▼</span>
+                </summary>
+                <div class="p-5 bg-white text-sm text-slate-600 rounded-b-lg space-y-6">
+                    
+                    <!-- Exact Matches -->
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-2 border-l-4 border-red-500 pl-2">🚨 หลักฐานการก็อปปี้ประโยค (Exact Phrase Matches)</h4>
+                        {f'<ul class="list-disc pl-5 space-y-1 text-red-600">{"".join([f"<li>{c}</li>" for c in pair["top_shared_clauses"]])}</ul>' if pair['top_shared_clauses'] else '<p class="text-slate-500">ไม่พบประโยคยาวๆ ที่เหมือนกันเป๊ะ 100%</p>'}
+                    </div>
+
+                    <!-- Shared Headings -->
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-2 border-l-4 border-orange-400 pl-2">📑 โครงสร้างหัวข้อที่ซ้ำกัน (Shared Headings)</h4>
+                        {f'<ul class="list-disc pl-5 space-y-1 text-orange-600">{"".join([f"<li>{h}</li>" for h in pair["shared_h"]])}</ul>' if pair['shared_h'] else '<p class="text-slate-500">ไม่พบหัวข้อย่อยที่ตั้งชื่อเหมือนกันเป๊ะ 100%</p>'}
+                    </div>
+                    
+                    <!-- Unique A -->
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-2 border-l-4 border-emerald-500 pl-2">✨ คำศัพท์เฉพาะของ Post A (พบ {len(pair["top_unique_a"])} คำที่น้ำหนักสูงสุด)</h4>
+                        <div class="flex flex-wrap gap-2">
+                            {"".join([f'<span class="px-2 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md shadow-sm" title="Weight: {w["weight"]:.4f}">{w["word"]}</span>' for w in pair['top_unique_a'] if w['word'].strip()])}
+                        </div>
+                    </div>
+
+                    <!-- Unique B -->
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-2 border-l-4 border-emerald-500 pl-2">✨ คำศัพท์เฉพาะของ Post B (พบ {len(pair["top_unique_b"])} คำที่น้ำหนักสูงสุด)</h4>
+                        <div class="flex flex-wrap gap-2">
+                            {"".join([f'<span class="px-2 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md shadow-sm" title="Weight: {w["weight"]:.4f}">{w["word"]}</span>' for w in pair['top_unique_b'] if w['word'].strip()])}
+                        </div>
+                    </div>
+
+                    <!-- Shared Terms -->
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-2 border-l-4 border-blue-500 pl-2">🔄 คำศัพท์แกนหลักที่ซ้ำซ้อนกัน (Shared Terms: {pair['total_shared']} คำ)</h4>
+                        <div class="flex flex-wrap gap-2">
+                            {"".join([f'<span class="px-2 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded-md shadow-sm" title="Weight: {w["weight"]:.4f}">{w["word"]}</span>' for w in pair['top_shared'] if w['word'].strip()])}
+                        </div>
+                    </div>
+
+                </div>
+            </details>
         </div>
 ''')
             f.write('''
