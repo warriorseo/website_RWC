@@ -1,16 +1,11 @@
-# 📂 RWC Workspace
+# 📁 Data Files & Spreadsheets
 
-พื้นที่การทำงาน (Workspace) นี้ เกี่ยวกับการทำงานของเว็บไซต์ RWC (https://rwcclinic.com/)
+หน้านี้รวบรวมลิงก์ไปยังไฟล์ข้อมูลที่จัดเก็บในรูปแบบ Google Sheets ของ RWC Clinic
 
-## 📋 รายละเอียดโปรเจกต์
-- **บทบาท (Role):** ที่ปรึกษาในการปรับปรุงหน้าเว็บไซต์ RWC Clinic
-- **จุดเน้นหลัก (Main Focus):** เน้นผลิตภัณฑ์ฟิลเลอร์ (Filler) เป็นหลัก และรวมถึงผลิตภัณฑ์หัตถการอื่นๆ 
-- **การเข้าถึงข้อมูล (Access):** มีสิทธิ์การเข้าถึงข้อมูล Google Search Console (GSC) โดยสามารถเชื่อมต่อผ่าน Service Account ได้
+### ข้อมูลย้อนหลัง 90 วัน (อัปเดตล่าสุด: 13 ก.ค. 2026)
 
-## 📁 ไฟล์ข้อมูล (Data Files & Spreadsheets)
-โปรเจกต์นี้มีการเก็บรวบรวมไฟล์ข้อมูลสำหรับวิเคราะห์ (อัปเดตล่าสุด: 13 ก.ค. 2026) ดังนี้:
-
-**Google Sheets (ข้อมูลย้อนหลัง 90 วัน จาก 13/07/2026):**
 - **GA4 (Pages and Screens):** [Google Sheets Link](https://docs.google.com/spreadsheets/d/1jB7zEv9mx_RgVJwSRg5fe8mGBxOZdDo5My8ygDeBDm4/edit?gid=956759795#gid=956759795)
 - **Search Console (GSC):** [Google Sheets Link](https://docs.google.com/spreadsheets/d/1M3AzK2GSgyxA295wsOJcGx_OwBrcRjhvxub5tMegPlw/edit?gid=191198335#gid=191198335)
-  *(ข้อมูลเหล่านี้สามารถเข้าถึงและอ่านผ่าน Google Sheets ได้โดยตรงด้วย Service Account)*
+- **GSC Backlinks (Top linked pages):** [Google Sheets Link](https://docs.google.com/spreadsheets/d/14-GLX0JRyjyoh3vBD6SVVX_oXSDLGrLNEqOg9G8b_4w/edit?gid=941169007#gid=941169007)
+
+*(ข้อมูลเหล่านี้สามารถเข้าถึงและอ่านผ่าน Google Sheets ได้โดยตรงด้วย Service Account ของระบบ)*

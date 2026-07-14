@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Content Pruning Strategy</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (v3 via CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans Thai"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Base font size explicitly set to 17px as requested */
+        html {
+            font-size: 17px;
+        }
+        
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #1e293b; /* slate-800 */
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Micro-animations */
+        .hover-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .icon-wrapper {
+            transition: transform 0.3s ease;
+        }
+        .hover-card:hover .icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header (Dark Theme) -->
+    <header class="bg-slate-900 text-white pt-8 pb-12 px-6 relative overflow-hidden shadow-md">
+        <!-- Decorative background elements -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+            <div class="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-brand-500/20 blur-3xl"></div>
+            <div class="absolute top-12 -right-24 w-80 h-80 rounded-full bg-purple-500/20 blur-3xl"></div>
+        </div>
+        
+        <div class="max-w-5xl mx-auto relative z-10 text-center flex flex-col items-center">
+            <div class="inline-flex items-center justify-center p-2 bg-white/10 rounded-xl mb-3 backdrop-blur-sm border border-white/10">
+                <i data-lucide="scissors" class="w-6 h-6 text-brand-500"></i>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                SEO Content Pruning Strategy
+            </h1>
+            <p class="text-[17px] md:text-[19px] text-slate-300 max-w-5xl w-full mx-auto font-light leading-snug">
+                แผนยกระดับคุณภาพเว็บไซต์ผ่านการคัดกรองเนื้อหา เพื่อเพิ่มประสิทธิภาพ SEO และดึงพลังของ Internal Link ให้แข็งแกร่งสูงสุด
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content (Light Theme) -->
+    <main class="flex-grow px-4 -mt-6 relative z-20 pb-8">
+        <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            
+            <!-- Card 1 -->
+            <div class="hover-card bg-white rounded-2xl p-5 border border-slate-200 shadow-md flex flex-col">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="icon-wrapper flex-shrink-0 w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center">
+                        <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
+                    </div>
+                    <h2 class="text-[19px] font-bold text-slate-900 leading-tight">1. วิเคราะห์ปัญหา (The Issue)</h2>
+                </div>
+                <p class="text-[15px] text-slate-600 mb-3 leading-snug">
+                    เว็บไซต์มีบทความจำนวนมากถึง 600-700 บทความ แต่เมื่อเจาะลึกข้อมูลพบว่ามีบทความจำนวนหนึ่งที่ไม่มีประสิทธิภาพ (Low-performing) โดยวัดจากเกณฑ์ 3 เดือนย้อนหลัง:
+                </p>
+                <ul class="space-y-2 flex-grow">
+                    <li class="flex items-start gap-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 flex-shrink-0 mt-0.5"></i>
+                        <span class="text-[15px] text-slate-700 leading-snug"><strong>อายุเนื้อหา:</strong> ต้องถูกเผยแพร่มาแล้ว<strong>มากกว่า 3 เดือน</strong> (เกณฑ์แรกสุด)</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 flex-shrink-0 mt-0.5"></i>
+                        <span class="text-[15px] text-slate-700 leading-snug"><strong>GSC:</strong> ไม่มีคลิกเลย (0 Clicks) จากผลการค้นหา <strong>ใน 3 เดือน</strong></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 flex-shrink-0 mt-0.5"></i>
+                        <span class="text-[15px] text-slate-700 leading-snug"><strong>GSC:</strong> อันดับ (Position) ไม่มีการขยับขึ้นหรือเติบโต <strong>ภายใน 3 เดือน</strong></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 flex-shrink-0 mt-0.5"></i>
+                        <span class="text-[15px] text-slate-700 leading-snug"><strong>GA4:</strong> ยอดคนเข้าชม (Views) ต่ำมากแทบไม่มีคนเห็น <strong>ภายใน 3 เดือน</strong></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 flex-shrink-0 mt-0.5"></i>
+                        <span class="text-[15px] text-slate-700 leading-snug"><strong>GA4:</strong> ระยะเวลาที่คนอยู่บนเว็บ (Engagement Time) <strong>ต่ำกว่า 30 วินาที</strong></span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="hover-card bg-white rounded-2xl p-5 border border-slate-200 shadow-md flex flex-col">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="icon-wrapper flex-shrink-0 w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center">
+                        <i data-lucide="settings" class="w-6 h-6"></i>
+                    </div>
+                    <h2 class="text-[19px] font-bold text-slate-900 leading-tight">2. การดำเนินการ (Action Plan)</h2>
+                </div>
+                <p class="text-[15px] text-slate-600 mb-3 leading-snug">
+                    เนื้อหาที่ไม่ผ่านเกณฑ์คุณภาพเหล่านี้ จะถูกดำเนินการจัดการชั่วคราวเพื่อไม่ให้ฉุดคะแนนภาพรวมของโดเมนลง:
+                </p>
+                <ul class="space-y-2 flex-grow">
+                    <li class="flex items-start gap-2">
+                        <i data-lucide="eye-off" class="w-4 h-4 text-brand-500 flex-shrink-0 mt-0.5"></i>
+                        <span class="text-[15px] text-slate-700 leading-snug">ปรับบทความเป้าหมายให้เป็น <strong>Noindex</strong></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i data-lucide="link-2-off" class="w-4 h-4 text-brand-500 flex-shrink-0 mt-0.5"></i>
+                        <span class="text-[15px] text-slate-700 leading-snug">ปรับ Incoming Internal Link ให้เป็น <strong>Nofollow</strong></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i data-lucide="list-checks" class="w-4 h-4 text-brand-500 flex-shrink-0 mt-0.5"></i>
+                        <span class="text-[15px] text-slate-700 leading-snug">ทำตารางตรวจสอบผ่าน <a href="https://docs.google.com/spreadsheets/d/1Iz97U0hcmSnyoZVVEA1SxxI3JkImbm4BgAlC_PkWypQ/edit?gid=199841076#gid=199841076" target="_blank" class="text-brand-600 hover:underline font-semibold hover:text-brand-800 transition-colors">Worksheet File</a></span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card 3 (Combined Goal & Benefits) -->
+            <div class="hover-card bg-white rounded-2xl p-5 border border-slate-200 shadow-md flex flex-col md:col-span-2 lg:col-span-1">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="icon-wrapper flex-shrink-0 w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                        <i data-lucide="target" class="w-6 h-6"></i>
+                    </div>
+                    <h2 class="text-[19px] font-bold text-slate-900 leading-tight">3. เป้าหมาย & ผลลัพธ์ (Goals & Benefits)</h2>
+                </div>
+                <p class="text-[15px] text-slate-600 mb-3 leading-snug">
+                    เพื่อกรองเนื้อหาคุณภาพต่ำออก ซึ่งจะส่งผลให้คะแนนโดเมนและพลัง Internal Link พุ่งสูงขึ้น:
+                </p>
+                <ul class="space-y-2 flex-grow">
+                    <li class="flex items-start gap-2">
+                        <i data-lucide="star" class="w-4 h-4 text-brand-500 flex-shrink-0 mt-0.5"></i>
+                        <span class="text-[15px] text-slate-700 leading-snug">คัดเหลือเพียง <strong>"High-Quality Content"</strong> เท่านั้นบนเว็บไซต์</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i data-lucide="bot" class="w-4 h-4 text-brand-500 flex-shrink-0 mt-0.5"></i>
+                        <span class="text-[15px] text-slate-700 leading-snug">ประหยัด Crawl Budget ให้ Googlebot <strong>โฟกัสเฉพาะหน้าที่สำคัญ</strong></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i data-lucide="trending-up" class="w-4 h-4 text-brand-500 flex-shrink-0 mt-0.5"></i>
+                        <span class="text-[15px] text-slate-700 leading-snug">คะแนนความน่าเชื่อถือโดยรวมของโดเมน (Domain Quality / Authority) สูงขึ้น</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i data-lucide="link" class="w-4 h-4 text-brand-500 flex-shrink-0 mt-0.5"></i>
+                        <span class="text-[15px] text-slate-700 leading-snug"><strong>Internal Link</strong> จะมีพลัง (Link Equity) ทรงประสิทธิภาพสูงสุด</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card 4 (Patents) -->
+            <div class="hover-card bg-white rounded-2xl p-5 border border-slate-200 shadow-md md:col-span-2 lg:col-span-3 mt-2">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="icon-wrapper flex-shrink-0 w-12 h-12 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center">
+                        <i data-lucide="microscope" class="w-6 h-6"></i>
+                    </div>
+                    <h2 class="text-[19px] font-bold text-slate-900 leading-tight">อ้างอิงกลยุทธ์นี้จากสิทธิบัตร Google</h2>
+                </div>
+                <p class="text-[15px] text-slate-600 mb-3 leading-snug">
+                    กลยุทธ์นี้ไม่ได้เป็นเพียงทฤษฎี แต่เป็นการทำวิศวกรรมย้อนกลับ (Reverse Engineering) จากสิทธิบัตรโดยตรงของ Google:
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-slate-800 text-[16px]">Site Quality Score</h3>
+                            <a href="https://patents.google.com/patent/US9031929B1/en" target="_blank" class="text-brand-500 hover:text-brand-600 flex items-center gap-1 text-[14px] font-medium transition-colors">
+                                <i data-lucide="external-link" class="w-3 h-3"></i> อ้างอิงสิทธิบัตร
+                            </a>
+                        </div>
+                        <p class="text-[14px] text-slate-600 leading-snug">
+                            สิทธิบัตรนี้ระบุชัดเจนว่า Google คำนวณ "คะแนนคุณภาพรวมของเว็บไซต์" จากการหาค่าเฉลี่ยของทุกหน้า หน้าเพจที่ไร้คุณภาพจำนวนมากจะไป <strong>"ฉุดค่าเฉลี่ย"</strong> ของทั้งโดเมนให้ต่ำลง การลบออกจึงเป็นการดึงค่าเฉลี่ยขึ้น
+                        </p>
+                    </div>
+                    
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-slate-800 text-[16px]">Information Gain</h3>
+                            <a href="https://patents.google.com/patent/US11354342B2/en" target="_blank" class="text-brand-500 hover:text-brand-600 flex items-center gap-1 text-[14px] font-medium transition-colors">
+                                <i data-external-link data-lucide="external-link" class="w-3 h-3"></i> อ้างอิงสิทธิบัตร
+                            </a>
+                        </div>
+                        <p class="text-[14px] text-slate-600 leading-snug">
+                            อัลกอริทึมให้คะแนนหน้าเว็บที่มี "ข้อมูลใหม่และเป็นประโยชน์ (Information Gain)" หน้าที่ไม่มีใครอ่านคือหน้าที่ไม่มี Information Gain การทำ Noindex เพื่อนำมารีไรต์ใหม่จึงสอดคล้องกับสิทธิบัตรนี้โดยตรง
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Worksheet Embedded -->
+        <div class="w-full mt-4">
+            <div class="hover-card bg-white rounded-2xl p-5 border border-slate-200 shadow-md">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="icon-wrapper flex-shrink-0 w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                            <i data-lucide="table" class="w-6 h-6"></i>
+                        </div>
+                        <h2 class="text-[19px] font-bold text-slate-900 leading-tight">Content Pruning Worksheet</h2>
+                    </div>
+                    <a href="https://docs.google.com/spreadsheets/d/1Iz97U0hcmSnyoZVVEA1SxxI3JkImbm4BgAlC_PkWypQ/edit?gid=199841076#gid=199841076" target="_blank" class="text-blue-600 hover:text-blue-800 flex items-center gap-2 text-[15px] font-medium bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-xl transition-colors">
+                        <i data-lucide="external-link" class="w-4 h-4"></i> เปิดใน Google Sheets
+                    </a>
+                </div>
+                <div class="w-full rounded-xl overflow-hidden border border-slate-200 h-[400px]">
+                    <iframe src="https://docs.google.com/spreadsheets/d/1Iz97U0hcmSnyoZVVEA1SxxI3JkImbm4BgAlC_PkWypQ/edit?rm=minimal&gid=199841076" class="w-full h-full border-0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
