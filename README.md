@@ -27,3 +27,19 @@
 - [ ] นำข้อมูลจากตาราง Negative Drops (52 บทความ) ไปวิเคราะห์และวางแผน Rewrite/ปรับปรุง Content เพื่อกู้ทราฟฟิกกลับมา
 - [ ] ติดตามผลบทความกลุ่ม Performance Improved (71 บทความ) ว่ามีคีย์เวิร์ดใดที่สามารถต่อยอดได้อีก
 - [ ] (หากมี) ดำเนินการเช็ค Duplicate Content ในหมวดหมู่ฟิลเลอร์ต่อจากรายงาน `filler_duplicate_report.html` ที่รันค้างไว้
+
+---
+
+# 🔗 11 Service Page URLs (Filler Category)
+
+- https://rwcclinic.com/breaking-down-fillers/
+- https://rwcclinic.com/filler-cheek-groove/
+- https://rwcclinic.com/filler-under-eyes/
+- https://rwcclinic.com/nose-filler-injection/
+- https://rwcclinic.com/vagina-filler/
+- https://rwcclinic.com/chin-filler/
+- https://rwcclinic.com/forehead-filler-injection/
+- https://rwcclinic.com/lips-filler/
+- https://rwcclinic.com/temple-filler/
+- https://rwcclinic.com/filler-injection-expert/
+- https://rwcclinic.com/hip-filler-injection/
