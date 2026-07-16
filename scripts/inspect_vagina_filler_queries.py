@@ -1,8 +1,8 @@
-from bs4 import BeautifulSoup
+import os
+import datetime
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
-# Google Sheets Auth
 creds_info = {
     'type': 'service_account',
     'project_id': 'gen-lang-client-0042204106',
@@ -12,53 +12,38 @@ creds_info = {
     'token_uri': 'https://oauth2.googleapis.com/token',
 }
 
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+SCOPES = ['https://www.googleapis.com/auth/webmasters.readonly']
 creds = service_account.Credentials.from_service_account_info(creds_info, scopes=SCOPES)
-service = build('sheets', 'v4', credentials=creds)
+gsc_service = build('searchconsole', 'v1', credentials=creds)
 
-SPREADSHEET_ID = '1Iz97U0hcmSnyoZVVEA1SxxI3JkImbm4BgAlC_PkWypQ'
-SHEET_NAME = 'Improve Engagement'
+url = 'https://rwcclinic.com/vagina-filler/'
+site_url = 'https://rwcclinic.com/'
 
-# Parse HTML
-with open('d:/AI-Cyborg-2558/_SEO_Clients/RWC/web/hip_filler_injection.html', 'r', encoding='utf-8') as f:
-    soup = BeautifulSoup(f.read(), 'html.parser')
+def get_top_queries(start_date, end_date, label):
+    request = {
+        'startDate': start_date,
+        'endDate': end_date,
+        'dimensions': ['query'],
+        'dimensionFilterGroups': [{
+            'filters': [{'dimension': 'page', 'expression': url, 'operator': 'equals'}]
+        }],
+        'rowLimit': 20
+    }
+    response = gsc_service.searchanalytics().query(siteUrl=site_url, body=request).execute()
+    rows = response.get('rows', [])
+    print(f"\n--- Top Queries for {label} ({start_date} to {end_date}) ---")
+    print(f"{'Query':<40} | {'Clicks':<8} | {'Impressions':<12} | {'CTR (%)':<8} | {'Position':<8}")
+    print("-" * 75)
+    for r in rows:
+        q = r['keys'][0]
+        clicks = r['clicks']
+        imp = r['impressions']
+        ctr = r['ctr'] * 100
+        pos = r['position']
+        print(f"{q:<40} | {clicks:<8} | {imp:<12} | {ctr:<8.1f}% | {pos:<8.1f}")
 
-content_div = soup.find('div', id='content-wrapper')
-if not content_div:
-    content_div = soup.body
+# March & April 2026
+get_top_queries('2026-03-01', '2026-04-30', 'March & April 2026')
 
-content_list = []
-for tag in content_div.find_all(['h1', 'h2', 'h3', 'p', 'img']):
-    if tag.name == 'h1':
-        text = ' '.join(tag.get_text().strip().split())
-        content_list.append(f"⭐ [H1] {text}")
-    elif tag.name == 'h2':
-        text = ' '.join(tag.get_text().strip().split())
-        content_list.append(f"  🔹 [H2] {text}")
-    elif tag.name == 'h3':
-        text = ' '.join(tag.get_text().strip().split())
-        content_list.append(f"      🔸 [H3] {text}")
-    elif tag.name == 'p':
-        text = ' '.join(tag.get_text().strip().split())
-        if text:
-            if len(text) > 80: text = text[:80] + '...'
-            content_list.append(f"            📄 [P] {text}")
-    elif tag.name == 'img':
-        alt = tag.get('alt', '')
-        src = tag.get('src', '')
-        content_list.append(f"            🖼️ [IMG] {alt}")
-
-values = [[item] for item in content_list]
-
-# Clear existing content first to avoid leftovers
-clear_range = f"{SHEET_NAME}!A2:A1000"
-service.spreadsheets().values().clear(
-    spreadsheetId=SPREADSHEET_ID, range=clear_range).execute()
-
-# Update values starting at A2
-range_name = f"{SHEET_NAME}!A2:A{len(values) + 1}"
-result = service.spreadsheets().values().update(
-    spreadsheetId=SPREADSHEET_ID, range=range_name,
-    valueInputOption='USER_ENTERED', body={'values': values}).execute()
-
-print(f"{result.get('updatedCells')} cells updated.")
+# May & June 2026
+get_top_queries('2026-05-01', '2026-06-30', 'May & June 2026')

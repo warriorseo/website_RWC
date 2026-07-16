@@ -1,6 +1,9 @@
 import os
 from google.oauth2 import service_account
-from googleapiclient.discovery import build
+from google.analytics.data_v1beta import BetaAnalyticsDataClient
+from google.analytics.data_v1beta.types import (
+    DateRange, Dimension, Metric, RunReportRequest, FilterExpression, FilterExpressionList, Filter,
+)
 
 creds_info = {
     'type': 'service_account',
@@ -11,53 +14,49 @@ creds_info = {
     'token_uri': 'https://oauth2.googleapis.com/token',
 }
 
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-creds = service_account.Credentials.from_service_account_info(creds_info, scopes=SCOPES)
-service = build('sheets', 'v4', credentials=creds)
+creds = service_account.Credentials.from_service_account_info(creds_info)
+ga4_client = BetaAnalyticsDataClient(credentials=creds)
+property_id = "292925407"
 
-SPREADSHEET_ID = '1Iz97U0hcmSnyoZVVEA1SxxI3JkImbm4BgAlC_PkWypQ'
-SHEET_ID = 291344769
-SHEET_NAME = 'URL Revision and Engagement'
+req = RunReportRequest(
+    property=f"properties/{property_id}",
+    dimensions=[Dimension(name="pagePath")],
+    metrics=[Metric(name="activeUsers"), Metric(name="userEngagementDuration")],
+    date_ranges=[DateRange(start_date="2025-07-01", end_date="2025-07-31")],
+    dimension_filter=FilterExpression(
+        and_group=FilterExpressionList(
+            expressions=[
+                FilterExpression(
+                    filter=Filter(
+                        field_name="pagePath",
+                        string_filter=Filter.StringFilter(
+                            value="vagina-filler",
+                            match_type=Filter.StringFilter.MatchType.CONTAINS
+                        ),
+                    )
+                ),
+                FilterExpression(
+                    filter=Filter(
+                        field_name="sessionDefaultChannelGroup",
+                        string_filter=Filter.StringFilter(value="Organic Search"),
+                    )
+                )
+            ]
+        )
+    )
+)
 
-# 1. Clear background color formatting
-requests = [{
-    'updateCells': {
-        'range': {
-            'sheetId': SHEET_ID,
-            'startRowIndex': 1, # Skip header row for safety, or clear all
-            'startColumnIndex': 1,
-        },
-        'fields': 'userEnteredFormat.backgroundColor' # Setting this without a value clears it
-    }
-}]
+res = ga4_client.run_report(req)
+print("Page Path Details for July 2025 (Organic Search):")
+total_users = 0
+total_dur = 0.0
+for row in res.rows:
+    path = row.dimension_values[0].value
+    users = int(row.metric_values[0].value)
+    dur = float(row.metric_values[1].value)
+    total_users += users
+    total_dur += dur
+    avg = dur / users if users > 0 else 0
+    print(f"  Path: {path:<40} | Users = {users:<4} | Avg Eng = {avg:.2f}s | Duration = {dur}")
 
-service.spreadsheets().batchUpdate(
-    spreadsheetId=SPREADSHEET_ID,
-    body={'requests': requests}
-).execute()
-print("Cleared red highlight formatting.")
-
-# 2. Update Header row
-result = service.spreadsheets().values().get(
-    spreadsheetId=SPREADSHEET_ID,
-    range=f"'{SHEET_NAME}'!A1:Z1"
-).execute()
-values = result.get('values', [])
-
-if values:
-    header = values[0]
-    # Update column C to O (index 2 to len-2)
-    for i in range(2, len(header) - 1):
-        if "(Avg Eng. Time)" in header[i]:
-            header[i] = header[i].replace(" (Avg Eng. Time)", "").strip()
-            
-    body = {
-        'values': [header]
-    }
-    service.spreadsheets().values().update(
-        spreadsheetId=SPREADSHEET_ID,
-        range=f"'{SHEET_NAME}'!A1",
-        valueInputOption="USER_ENTERED",
-        body=body
-    ).execute()
-    print("Updated header row to short format.")
+print(f"\nSum of users across paths: {total_users} (Note: activeUsers is unique users, so simple sum of paths might exceed unique users if a user visited multiple paths).")

@@ -13,48 +13,66 @@ creds_info = {
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 creds = service_account.Credentials.from_service_account_info(creds_info, scopes=SCOPES)
-service = build('sheets', 'v4', credentials=creds)
+sheets_service = build('sheets', 'v4', credentials=creds)
 
 SPREADSHEET_ID = '1Iz97U0hcmSnyoZVVEA1SxxI3JkImbm4BgAlC_PkWypQ'
-SHEET_NAME = 'URL Revision and Engagement'
+SHEET_NAME = 'Improve Engagement'
 
-# Fetch existing data
-result = service.spreadsheets().values().get(
-    spreadsheetId=SPREADSHEET_ID,
-    range=f"'{SHEET_NAME}'!A1:Z100"
+# Retrieve all data from column B onwards
+sheet_data = sheets_service.spreadsheets().values().get(
+    spreadsheetId=SPREADSHEET_ID, range=f"'{SHEET_NAME}'!B1:Z500"
 ).execute()
-values = result.get('values', [])
 
+values = sheet_data.get('values', [])
 if not values:
-    print('No data found.')
-    exit()
+    print("No data found.")
+    exit(0)
 
-template = "https://analytics.google.com/analytics/web/?hl=en#/a149800124p292925407/reports/explorer?params=_u..nav%3Dmaui%26_r.explorerCard..filterTerm%3D%252F{slug}%252F%26_r.explorerCard..startRow%3D0%26_u..built_comparisons_enabled%3Dtrue%26_u..comparisons%3D%5B%7B%22savedComparisonId%22:%227523527606%22,%22name%22:%22Organic%20traffic%22,%22isEnabled%22:true,%22filters%22:%5B%7B%22fieldName%22:%22sessionDefaultChannelGrouping%22,%22evaluationType%22:8,%22expressionList%22:%5B%22Organic%20Search%22,%22Organic%20Video%22,%22Organic%20Social%22,%22Organic%20Shopping%22%5D,%22isCaseSensitive%22:true%7D%5D,%22systemDefinedSavedComparisonType%22:2,%22isSystemDefined%22:true%7D%5D%26_r.explorerCard..seldim%3D%5B%22unifiedPagePathScreen%22%5D%26_u.comparisonOption%3Ddisabled%26_r.explorerCard..dateGranularity%3DnthMonth%26_r.explorerCard..sortKey%3DuserEngagementDurationPerUser%26_r.explorerCard..selmet%3D%5B%22userEngagementDurationPerUser%22,%22screenPageViews%22%5D%26_u.dateOption%3DyearToDate&ruid=0d646679-6477-4cd0-a2cc-a3c33313c77f&collectionId=10576530072&r=15246722299"
-
-# Update the GA4 Check Link column (last column)
-rows = []
-for idx, row in enumerate(values):
-    if idx == 0:
-        rows.append(row)
+cols_count = len(values[0])
+for col_idx in range(cols_count):
+    col_letter = ''
+    c_idx = col_idx + 1 # B starts at 1
+    while c_idx >= 0:
+        col_letter = chr(c_idx % 26 + 65) + col_letter
+        c_idx = c_idx // 26 - 1
+        
+    col_cells = []
+    for row in values:
+        if col_idx < len(row):
+            col_cells.append(row[col_idx])
+        else:
+            col_cells.append('')
+            
+    while col_cells and not col_cells[-1].strip():
+        col_cells.pop()
+        
+    if not col_cells:
         continue
+        
+    url = col_cells[0]
     
-    url = row[0]
-    slug = url.replace('https://rwcclinic.com/', '').replace('/', '')
+    # Analyze headings
+    headings = []
+    for idx, cell in enumerate(col_cells[1:]):
+        cell_str = str(cell).strip()
+        if '[H2]' in cell_str:
+            headings.append((idx + 2, 'H2', cell_str))
+        elif '[H3]' in cell_str:
+            headings.append((idx + 2, 'H3', cell_str))
+            
+    print(f"\n==============================")
+    print(f"Col {col_letter} ({len(headings)} headings): {url}")
+    print(f"==============================")
     
-    ga4_link = template.replace('{slug}', slug)
-    
-    # Replace the last element with HYPERLINK formula
-    row[-1] = f'=HYPERLINK("{ga4_link}", "GA4 Data")'
-    rows.append(row)
-
-# Update sheet
-body = {
-    'values': rows
-}
-result = service.spreadsheets().values().update(
-    spreadsheetId=SPREADSHEET_ID,
-    range=f"'{SHEET_NAME}'!A1",
-    valueInputOption="USER_ENTERED",
-    body=body
-).execute()
-print(f"Updated {result.get('updatedCells')} cells with HYPERLINK formula.")
+    # Check hierarchy
+    has_h2 = False
+    last_heading_type = None
+    for row_num, h_type, text in headings:
+        warning = ""
+        if h_type == 'H3':
+            if not has_h2:
+                warning = " ❌ H3 before first H2"
+        elif h_type == 'H2':
+            has_h2 = True
+            
+        print(f"  Row {row_num}: {text}{warning}")

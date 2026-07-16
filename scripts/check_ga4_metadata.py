@@ -1,7 +1,5 @@
 import os
-import time
 from google.oauth2 import service_account
-from googleapiclient.discovery import build
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
 from google.analytics.data_v1beta.types import (
     DateRange, Dimension, Metric, RunReportRequest, FilterExpression, FilterExpressionList, Filter,
@@ -16,76 +14,38 @@ creds_info = {
     'token_uri': 'https://oauth2.googleapis.com/token',
 }
 
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/analytics.readonly']
-creds = service_account.Credentials.from_service_account_info(creds_info, scopes=SCOPES)
-service = build('sheets', 'v4', credentials=creds)
+creds = service_account.Credentials.from_service_account_info(creds_info)
 ga4_client = BetaAnalyticsDataClient(credentials=creds)
-
 property_id = "292925407"
-SPREADSHEET_ID = '1Iz97U0hcmSnyoZVVEA1SxxI3JkImbm4BgAlC_PkWypQ'
-SHEET_NAME = 'URL Revision and Engagement'
-
-urls = [
-    'breaking-down-fillers',
-    'filler-cheek-groove',
-    'filler-under-eyes',
-    'nose-filler-injection',
-    'vagina-filler',
-    'chin-filler',
-    'forehead-filler-injection',
-    'lips-filler',
-    'temple-filler',
-    'filler-injection-expert',
-    'hip-filler-injection'
-]
 
 req = RunReportRequest(
     property=f"properties/{property_id}",
-    dimensions=[Dimension(name="yearMonth")],
+    dimensions=[Dimension(name="pagePath")],
     metrics=[Metric(name="activeUsers")],
-    date_ranges=[DateRange(start_date="2025-11-01", end_date="today")],
-)
-res = ga4_client.run_report(req)
-months = sorted([row.dimension_values[0].value for row in res.rows])
-
-rows = []
-header = ["URL"] + [f"{m[:4]}-{m[4:]}" for m in months]
-rows.append(header)
-
-for slug in urls:
-    req = RunReportRequest(
-        property=f"properties/{property_id}",
-        dimensions=[Dimension(name="yearMonth")],
-        metrics=[Metric(name="activeUsers"), Metric(name="userEngagementDuration")],
-        date_ranges=[DateRange(start_date="2025-11-01", end_date="today")],
-        dimension_filter=FilterExpression(
-            filter=Filter(
-                field_name="pagePath",
-                string_filter=Filter.StringFilter(value=f"/{slug}/"),
-            )
+    date_ranges=[DateRange(start_date="2025-07-01", end_date="2025-07-31")],
+    dimension_filter=FilterExpression(
+        and_group=FilterExpressionList(
+            expressions=[
+                FilterExpression(
+                    filter=Filter(
+                        field_name="pagePath",
+                        string_filter=Filter.StringFilter(value="/vagina-filler/"),
+                    )
+                ),
+                FilterExpression(
+                    filter=Filter(
+                        field_name="sessionDefaultChannelGroup",
+                        string_filter=Filter.StringFilter(value="Organic Search"),
+                    )
+                )
+            ]
         )
     )
-    res = ga4_client.run_report(req)
-    data = {}
-    for row in res.rows:
-        ym = row.dimension_values[0].value
-        users = int(row.metric_values[0].value)
-        duration = float(row.metric_values[1].value)
-        avg_eng = duration / users if users > 0 else 0
-        data[ym] = f"{avg_eng:.1f}"
-    
-    row_data = [f"https://rwcclinic.com/{slug}/"]
-    for m in months:
-        row_data.append(data.get(m, "0.0"))
-    rows.append(row_data)
+)
 
-body = {
-    'values': rows
-}
-result = service.spreadsheets().values().update(
-    spreadsheetId=SPREADSHEET_ID,
-    range=f"'{SHEET_NAME}'!A1",
-    valueInputOption="USER_ENTERED",
-    body=body
-).execute()
-print(f"Updated {result.get('updatedCells')} cells in Google Sheet.")
+res = ga4_client.run_report(req)
+print("Metadata details:")
+print(f"  Empty Reason: {res.metadata.empty_reason}")
+print(f"  Subject to Thresholding: {res.metadata.subject_to_thresholding}")
+print(f"  Currency Code: {res.metadata.currency_code}")
+print(f"  Time Zone: {res.metadata.time_zone}")

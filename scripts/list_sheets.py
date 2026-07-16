@@ -1,5 +1,4 @@
 import os
-import datetime
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
@@ -14,51 +13,12 @@ creds_info = {
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 creds = service_account.Credentials.from_service_account_info(creds_info, scopes=SCOPES)
-service = build('sheets', 'v4', credentials=creds)
+sheets_service = build('sheets', 'v4', credentials=creds)
 
 SPREADSHEET_ID = '1Iz97U0hcmSnyoZVVEA1SxxI3JkImbm4BgAlC_PkWypQ'
-SHEET_NAME = 'URL Revision and Engagement'
 
-# Fetch existing data
-result = service.spreadsheets().values().get(
-    spreadsheetId=SPREADSHEET_ID,
-    range=f"'{SHEET_NAME}'!A1:Z100"
-).execute()
-values = result.get('values', [])
-
-if not values:
-    print('No data found.')
-    exit()
-
-today_str = datetime.datetime.now().strftime('%Y%m%d')
-date_params = f"%26_u.dateOption%3Dcustom%26_u.dateStart%3D20251101%26_u.dateEnd%3D{today_str}"
-
-template = "https://analytics.google.com/analytics/web/?hl=en#/a149800124p292925407/reports/explorer?params=_u..nav%3Dmaui%26_r.explorerCard..filterTerm%3D%252F{slug}%252F%26_r.explorerCard..startRow%3D0%26_u..built_comparisons_enabled%3Dtrue%26_u..comparisons%3D%5B%7B%22savedComparisonId%22:%227523527606%22,%22name%22:%22Organic%20traffic%22,%22isEnabled%22:true,%22filters%22:%5B%7B%22fieldName%22:%22sessionDefaultChannelGrouping%22,%22evaluationType%22:8,%22expressionList%22:%5B%22Organic%20Search%22,%22Organic%20Video%22,%22Organic%20Social%22,%22Organic%20Shopping%22%5D,%22isCaseSensitive%22:true%7D%5D,%22systemDefinedSavedComparisonType%22:2,%22isSystemDefined%22:true%7D%5D%26_r.explorerCard..seldim%3D%5B%22unifiedPagePathScreen%22%5D%26_u.comparisonOption%3Ddisabled%26_r.explorerCard..dateGranularity%3DnthMonth%26_r.explorerCard..sortKey%3DuserEngagementDurationPerUser%26_r.explorerCard..selmet%3D%5B%22userEngagementDurationPerUser%22,%22screenPageViews%22%5D" + date_params + "&ruid=0d646679-6477-4cd0-a2cc-a3c33313c77f&collectionId=10576530072&r=15246722299"
-
-# Update the GA4 Check Link column (last column)
-rows = []
-for idx, row in enumerate(values):
-    if idx == 0:
-        rows.append(row)
-        continue
-    
-    url = row[0]
-    slug = url.replace('https://rwcclinic.com/', '').replace('/', '')
-    
-    ga4_link = template.replace('{slug}', slug)
-    
-    # Replace the last element with HYPERLINK formula
-    row[-1] = f'=HYPERLINK("{ga4_link}", "GA4 Data")'
-    rows.append(row)
-
-# Update sheet
-body = {
-    'values': rows
-}
-result = service.spreadsheets().values().update(
-    spreadsheetId=SPREADSHEET_ID,
-    range=f"'{SHEET_NAME}'!A1",
-    valueInputOption="USER_ENTERED",
-    body=body
-).execute()
-print(f"Updated {result.get('updatedCells')} cells with HYPERLINK formula and custom date range.")
+spreadsheet = sheets_service.spreadsheets().get(spreadsheetId=SPREADSHEET_ID).execute()
+print("Sheets in this spreadsheet:")
+for s in spreadsheet.get('sheets', []):
+    prop = s['properties']
+    print(f"- Title: {prop['title']}, ID: {prop['sheetId']}, Index: {prop['index']}")
