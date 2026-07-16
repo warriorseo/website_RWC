@@ -34,6 +34,7 @@ template = "https://analytics.google.com/analytics/web/?hl=en#/a149800124p292925
 
 # Update the GA4 Check Link column (last column)
 rows = []
+header_len = len(values[0])
 for idx, row in enumerate(values):
     if idx == 0:
         rows.append(row)
@@ -44,8 +45,12 @@ for idx, row in enumerate(values):
     
     ga4_link = template.replace('{slug}', slug)
     
+    # Pad the row to match the header length to prevent overwriting wrong columns
+    while len(row) < header_len:
+        row.append('')
+        
     # Replace the last element with HYPERLINK formula
-    row[-1] = f'=HYPERLINK("{ga4_link}", "GA4 Data")'
+    row[header_len - 1] = f'=HYPERLINK("{ga4_link}", "GA4 Data")'
     rows.append(row)
 
 # Update sheet

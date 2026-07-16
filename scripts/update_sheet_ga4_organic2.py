@@ -41,13 +41,16 @@ urls = [
 ]
 
 ga4_links = {}
-with open('d:/AI-Cyborg-2558/_SEO_Clients/RWC/sheet_data.csv', 'r', encoding='utf-8') as f:
-    reader = csv.reader(f)
-    next(reader)
-    for row in reader:
-        url = row[0].replace('https://rwcclinic.com/', '').replace('/', '')
-        if url in urls and len(row) > 12:
-            ga4_links[url] = row[12]
+try:
+    with open('d:/AI-Cyborg-2558/_SEO_Clients/RWC/sheet_data.csv', 'r', encoding='utf-8') as f:
+        reader = csv.reader(f)
+        next(reader)
+        for row in reader:
+            url = row[0].replace('https://rwcclinic.com/', '').replace('/', '')
+            if url in urls and len(row) > 12:
+                ga4_links[url] = row[12]
+except FileNotFoundError:
+    print("Warning: sheet_data.csv not found. GA4 Links will fall back to empty strings.")
 
 req = RunReportRequest(
     property=f"properties/{property_id}",
@@ -60,7 +63,7 @@ months = sorted([row.dimension_values[0].value for row in res.rows])
 
 header = ["URL", "Avg Monthly Active Users (Organic)"]
 for m in months:
-    header.append(f"{m[:4]}-{m[4:]} (Avg Eng. Time)")
+    header.append(f"{m[:4]}-{m[4:]}")
 header.append("GA4 Check Link")
 
 data_rows = []
@@ -108,9 +111,9 @@ for slug in urls:
     row_data = [f"https://rwcclinic.com/{slug}/", f"{avg_monthly_users:.1f}"]
     for m in months:
         if m in data:
-            row_data.append(data[m]["eng"])
+            row_data.append(str(data[m]["users"]))
         else:
-            row_data.append("0.0")
+            row_data.append("0")
     row_data.append(ga4_links.get(slug, ""))
     data_rows.append(row_data)
 
